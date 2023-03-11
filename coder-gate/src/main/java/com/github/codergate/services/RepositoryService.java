@@ -113,6 +113,19 @@ public class RepositoryService {
         return repositoriesAdded;
     }
 
+    /***
+     * gets the repository information using userId
+     * @param userId userId
+     * @return RepositoriesAdded dto class
+     */
+    public List<RepositoriesAdded> getRepositoryFromUserId(Long userId)
+    {
+        List<RepositoryEntity> repositoriesByUserId = repositoryRepository.findByUserId(userId);
+        LOGGER.info("RepositoryService : Getting the repositories from user Id ");
+        List<RepositoriesAdded> repositoriesAdded = entityToDto(repositoriesByUserId);
+        return repositoriesAdded;
+    }
+
 
     /***
      * updates the repository table
