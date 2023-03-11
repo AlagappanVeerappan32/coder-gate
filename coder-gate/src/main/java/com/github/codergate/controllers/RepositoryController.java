@@ -1,6 +1,7 @@
 package com.github.codergate.controllers;
 
 import com.github.codergate.dto.installation.RepositoriesAdded;
+import com.github.codergate.dto.repositoryController.UserRequest;
 import com.github.codergate.services.RepositoryService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,11 +26,11 @@ public class RepositoryController {
     private static final Logger LOGGER = LoggerFactory.getLogger(RepositoryController.class);
 
         @GetMapping("/getRepositories")
-        public ResponseEntity<List<RepositoriesAdded>> fetchRepositories(@RequestBody String userId) {
+        public ResponseEntity<List<RepositoriesAdded>> fetchRepositories(@RequestBody UserRequest userRequest) {
             LOGGER.debug("fetchRepositories : Entering the method");
             List <RepositoriesAdded> repositoriesAdded = new ArrayList<>();
-            if (userId != null && !userId.isEmpty()) {
-                repositoriesAdded =repositoryService.getRepositoryFromUserId(Long.parseLong(userId));
+            if (userRequest.getUserId() != null && !userRequest.getUserId().isEmpty()) {
+                repositoriesAdded =repositoryService.getRepositoryFromUserId(Long.parseLong(userRequest.getUserId()));
             }
             LOGGER.debug("fetchRepositories : Exiting the method");
             return ResponseEntity.ok(repositoriesAdded);
