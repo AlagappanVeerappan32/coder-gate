@@ -30,6 +30,9 @@ public class EventService {
      */
     public InstallationPayloadDTO addEvent(String eventType, int userId, List<Integer>repositoryIdList)
     {
+        if(eventType == null || repositoryIdList == null) {
+            throw new IllegalArgumentException("eventType and repositoryIdList cannot be null");
+        }
         InstallationPayloadDTO installationPayloadDTO;
         List<EventEntity> eventEntity= convertDTOToEntity(eventType,userId,repositoryIdList);
         List<EventEntity> savedEvent=eventRepository.saveAll(eventEntity);
@@ -118,7 +121,7 @@ public class EventService {
      * @param repositoryIdList repositoryRepository ids
      * @return entity
      */
-    private List<EventEntity> convertDTOToEntity(String eventTypeName, int userId, List<Integer>repositoryIdList)
+    public List<EventEntity> convertDTOToEntity(String eventTypeName, int userId, List<Integer>repositoryIdList)
     {
         List<EventEntity> eventEntityList = new ArrayList<>();
         EventEntity eventEntity;
@@ -187,7 +190,7 @@ public class EventService {
      * @param eventType event information
      * @return dto class
      */
-    private InstallationPayloadDTO convertEntityToDTO(List<EventEntity> eventType)
+    public InstallationPayloadDTO convertEntityToDTO(List<EventEntity> eventType)
     {
         InstallationPayloadDTO installationPayloadDTO = null;
         if(eventType != null)
@@ -210,7 +213,7 @@ public class EventService {
      * @param eventType Event Entity
      * @return HeadCommitDTO object
      */
-    private HeadCommitDTO entityToHeadCommitDto(EventEntity eventType)
+    public HeadCommitDTO entityToHeadCommitDto(EventEntity eventType)
     {
         HeadCommitDTO headCommitDTO = null;
         if(eventType != null)

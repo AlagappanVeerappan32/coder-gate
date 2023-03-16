@@ -20,7 +20,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import static org.apache.logging.log4j.ThreadContext.containsKey;
 
 @Service
 public class WebHookListenerService {
@@ -53,34 +52,33 @@ public class WebHookListenerService {
 
         if (webhookPayload.containsKey("pusher"))
             action = Constants.PUSH_EVENT;
-        else if(webhookPayload.get("event").equals("pull_request")){
-            action =Constants.PULL_REQUEST_EVENT;
+
+        else if(webhookPayload.get(Constants.INSTALLATION_ACTION).equals("pull_request")) {
+            action = Constants.PULL_REQUEST_EVENT;
         }
-        else
+        else {
             action = (String) webhookPayload.get(Constants.INSTALLATION_ACTION);
-
-
-
-        switch (action) {
-            case Constants.INSTALLATION_REPOSITORY_ADDED:
-            case Constants.INSTALLATION_CREATED:
-                installationAddRepositoryWebhookListener(webhookPayload);
-                break;
-            case Constants.INSTALLATION_DELETED:
-                handleInstallationDeletion(webhookPayload);
-                break;
-            case Constants.INSTALLATION_REPOSITORY_REMOVED:
-                removeRepository(webhookPayload);
-                break;
-            case Constants.PUSH_EVENT:
-                handlePushEvent(webhookPayload);
-                break;
-            case Constants.PULL_REQUEST_EVENT:
-                handlePullRequestEvent(webhookPayload);
-                break;
-            default:
-                LOGGER.warn("handleIncomingRequest : Following webhook payload is not yet supported {}", webhookPayload);
-                break;
+            switch (action) {
+                case Constants.INSTALLATION_REPOSITORY_ADDED:
+                case Constants.INSTALLATION_CREATED:
+                    installationAddRepositoryWebhookListener(webhookPayload);
+                    break;
+                case Constants.INSTALLATION_DELETED:
+                    handleInstallationDeletion(webhookPayload);
+                    break;
+                case Constants.INSTALLATION_REPOSITORY_REMOVED:
+                    removeRepository(webhookPayload);
+                    break;
+                case Constants.PUSH_EVENT:
+                    handlePushEvent(webhookPayload);
+                    break;
+                case Constants.PULL_REQUEST_EVENT:
+                    handlePullRequestEvent(webhookPayload);
+                    break;
+                default:
+                    LOGGER.warn("handleIncomingRequest : Following webhook payload is not yet supported {}", webhookPayload);
+                    break;
+            }
         }
     }
 

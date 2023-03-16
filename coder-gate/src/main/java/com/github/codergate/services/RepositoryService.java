@@ -36,7 +36,6 @@ public class RepositoryService {
         }
         return repositoriesAddedDto;
     }
-// repositoryEntityList.stream().map(items -> repositoryRepository.save(items)).collect(Collectors.toList());
     /***
      * adds the repository to the table during push event
      * @param
@@ -59,13 +58,14 @@ public class RepositoryService {
      */
     public List<RepositoriesAddedDTO> getRepositoryById(List<Integer> repositoryId)
     {
-        List<RepositoriesAddedDTO> repositoriesAddedDto =null;
+        List<RepositoriesAddedDTO> repositoriesAddedDto = new ArrayList<>();
         for(int id : repositoryId) {
             Optional<RepositoryEntity> repositoryEntity = repositoryRepository.findById(id);
             if (repositoryEntity.isPresent()) {
                 List<RepositoryEntity> entity = new ArrayList<>();
                 entity.add(repositoryEntity.get());
-                repositoriesAddedDto = convertEntityToDTO(entity);
+                List<RepositoriesAddedDTO> convertedDto = convertEntityToDTO(entity);
+                repositoriesAddedDto.addAll(convertedDto);
                 LOGGER.info("getRepositoryById : Getting the repository information {}", entity);
             }else {
                 LOGGER.warn("getRepositoryById: repository not found");
@@ -121,7 +121,7 @@ public class RepositoryService {
      * @param userId user id
      * @return  RepositoryEntity
      */
-    private List<RepositoryEntity> convertDTOToEntityForInstallationEvent(List<RepositoriesAddedDTO> repositoriesAddedDto, int userId) {
+    public List<RepositoryEntity> convertDTOToEntityForInstallationEvent(List<RepositoriesAddedDTO> repositoriesAddedDto, int userId) {
 
         List<RepositoryEntity> listOfRepositoryEntities = null;
 
@@ -168,7 +168,7 @@ public class RepositoryService {
      * @param repositoryEntity RepositoryEntity class
      * @return dto class
      */
-    private List<RepositoriesAddedDTO> convertEntityToDTO(List<RepositoryEntity> repositoryEntity)
+    public List<RepositoriesAddedDTO> convertEntityToDTO(List<RepositoryEntity> repositoryEntity)
     {
         List<RepositoriesAddedDTO> listOfRepositoryAddedDTOValues = null;
 
