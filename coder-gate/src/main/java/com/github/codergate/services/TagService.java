@@ -37,7 +37,7 @@ public class TagService {
      * @param repositoryDTO RepositoryDTO object
      * @return Tag Entity
      */
-    private TagEntity convertDTOToEntity(RepositoryDTO repositoryDTO) {
+    public TagEntity convertDTOToEntity(RepositoryDTO repositoryDTO) {
 
         TagEntity tagEntity = null;
 
@@ -49,19 +49,21 @@ public class TagService {
                 TagId tagId = new TagId(repositoryDTO.getId(), repositoryDTO.getTagsUrl());
                 tagEntity.setTagId(tagId);
             }
-            LOGGER.info("convertDTOToEntity : Repository DTO has been converted to Tag Entity {}", tagEntity);
         } else {
             LOGGER.warn("convertDTOToEntity : Repository dto doesn't have tag");
         }
+        LOGGER.info("convertDTOToEntity : Repository DTO has been converted to Tag Entity {}", tagEntity);
         return tagEntity;
     }
+
+
 
     /***
      * Converts Tag entity to RepositoryDTO
      * @param tag Tag Entity
      * @return RepositoryDTO Object
      */
-    private RepositoryDTO convertEntityToDTO(TagEntity tag) {
+    public RepositoryDTO convertEntityToDTO(TagEntity tag) {
         RepositoryDTO repositoryDTO = null;
         if(tag != null)
         {
@@ -78,4 +80,5 @@ public class TagService {
         }
         return repositoryDTO;
     }
+
 }

@@ -37,12 +37,12 @@ public class BranchService {
      * @param repositoryDTO RepositoryDTO object
      * @return Branch entity
      */
-    private BranchEntity convertDTOToEntity(RepositoryDTO repositoryDTO) {
+    public BranchEntity convertDTOToEntity(RepositoryDTO repositoryDTO) {
         BranchEntity branchEntity = null;
         if(repositoryDTO != null)
         {
             branchEntity = new BranchEntity();
-            if(repositoryDTO.getTagsUrl() != null && repositoryDTO.getId() != null)
+            if(repositoryDTO.getBranchesUrl() != null && repositoryDTO.getId() != null)
             {
                 BranchId branchId = new BranchId(repositoryDTO.getId(), repositoryDTO.getBranchesUrl());
                 branchEntity.setBranchId(branchId);
@@ -54,12 +54,14 @@ public class BranchService {
         return branchEntity;
     }
 
+
+
     /***
      * converts Branch entity to RepositoryDTO
      * @param branch Branch entity
      * @return RepositoryDTO object
      */
-    private RepositoryDTO convertEntityToDto(BranchEntity branch) {
+    public RepositoryDTO convertEntityToDto(BranchEntity branch) {
         RepositoryDTO repositoryDTO = null;
         if(branch != null)
         {
@@ -76,4 +78,5 @@ public class BranchService {
         }
         return repositoryDTO;
     }
+
 }
