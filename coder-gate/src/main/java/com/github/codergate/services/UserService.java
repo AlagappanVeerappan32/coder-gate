@@ -42,7 +42,6 @@ public class UserService {
      */
     public UserEntity addUser(Integer userId,String login, String userEmail)
     {
-        SenderDTO sender=null;
         UserEntity userEntity = convertSenderDtoToEntity(userId,login, userEmail);
         if(userEntity!=null) {
             UserEntity savedEntity = userRepository.save(userEntity);
@@ -76,14 +75,13 @@ public class UserService {
      * @param userId userId
      * @return dto class
      */
-    public AccountDTO updateUserById(Long userId)
-    {
-        AccountDTO accountDto =null;
-        UserEntity userEntity=userRepository.findById(userId).orElse(null);
-        if(userEntity!=null)
-        {
-            UserEntity savedEntity = userRepository.save(userEntity);
+    public AccountDTO updateUserById(Long userId) {
+        AccountDTO accountDto = null;
+        Optional<UserEntity> optionalUserEntity = userRepository.findById(userId);
+        if (optionalUserEntity.isPresent()) {
+            UserEntity userEntity = optionalUserEntity.get();
             LOGGER.info("updateUserById : Updating the user information");
+            UserEntity savedEntity = userRepository.save(userEntity);
             accountDto = convertEntityToAccountDto(savedEntity);
         }
         return accountDto;
@@ -112,7 +110,7 @@ public class UserService {
      * @param accountDTO dto, id and name check and set.
      * @return entity
      */
-    public UserEntity convertAccountDtoToEntity(AccountDTO accountDTO)
+    private UserEntity convertAccountDtoToEntity(AccountDTO accountDTO)
     {
         UserEntity userEntity = null;
         if(accountDTO != null)
@@ -139,20 +137,16 @@ public class UserService {
      * @param userEmail email of User in String format
      * @return User Entity
      */
-    public UserEntity convertSenderDtoToEntity(Integer id, String login, String userEmail)
+    private UserEntity convertSenderDtoToEntity(Integer id, String login, String userEmail)
     {
         UserEntity userEntity = null;
-        userEntity = new UserEntity();
-        if(id!=null) {
+        if(id!=null && login!=null && userEmail!=null) {
+            userEntity = new UserEntity();
             userEntity.setUserId(id);
-        }
-        if(login!=null) {
             userEntity.setUserName(login);
-        }
-        if(userEmail!=null) {
             userEntity.setEmail(userEmail);
+            LOGGER.info("convertSenderDtoToEntity : Converted SenderDTO to Entity {}", userEntity);
         }
-        LOGGER.info("convertSenderDtoToEntity : Converted SenderDTO to Entity {}", userEntity);
 
         return userEntity;
     }
@@ -162,7 +156,7 @@ public class UserService {
      * @param userEntity user entity
      * @return AccountDTO
      */
-    public AccountDTO convertEntityToAccountDto(UserEntity userEntity)
+    private AccountDTO convertEntityToAccountDto(UserEntity userEntity)
     {
         AccountDTO accountDTO = null;
         if(userEntity != null)
@@ -188,7 +182,7 @@ public class UserService {
      * @param userEntity User Entity
      * @return SenderDTO
      */
-    public SenderDTO convertEntityToSenderDTO(UserEntity userEntity)
+    private SenderDTO convertEntityToSenderDTO(UserEntity userEntity)
     {
         SenderDTO senderDTO = null;
         if(userEntity != null)
