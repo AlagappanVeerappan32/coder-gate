@@ -91,7 +91,7 @@ public class AnalysisService {
                 }
                 if(newInformation.getCyclicDependency() != 0)
                 {
-                    analysisEntity.setCyclicDependency(newInformation.getCyclomaticComplexity());
+                    analysisEntity.setCyclicDependency(newInformation.getCyclicDependency());
                 }
                 if(newInformation.getGodComponents() != 0)
                 {
@@ -196,7 +196,7 @@ public class AnalysisService {
             }
             if(analysisDTO.getCyclicDependency() != 0)
             {
-                analysisEntity.setCyclicDependency(analysisDTO.getCyclomaticComplexity());
+                analysisEntity.setCyclicDependency(analysisDTO.getCyclicDependency());
             }
             if(analysisDTO.getGodComponents() != 0)
             {
@@ -289,7 +289,7 @@ public class AnalysisService {
             }
             if(analysisEntity.getCyclicDependency() != 0)
             {
-                analysisDTO.setCyclicDependency(analysisEntity.getCyclomaticComplexity());
+                analysisDTO.setCyclicDependency(analysisEntity.getCyclicDependency());
             }
             if(analysisEntity.getGodComponents() != 0)
             {

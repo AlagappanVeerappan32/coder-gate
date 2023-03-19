@@ -221,14 +221,14 @@ public class WebHookListenerService {
             LOGGER.info("handlePushEvent: user has initialized a push event");
 
             //Everytime a push event happens, we run analysis. So we call it here. I have hard coded the values for DTO.
-//            AnalysisDTO analysisDTO = new AnalysisDTO("Code Smell", repositoryEntity.getRepositoryId(), 30, 13, 23, 90, 75, 3, 80, 12, 4, 17, 43, 32, 57, 54, 21, 29, 11);
-//            analysisService.addAnalysis(analysisDTO, eventEntity.getEventId(), repositoryEntity.getRepositoryId());
+//            AnalysisDTO newAnalysisDTO = new AnalysisDTO("Code Smell", repositoryEntity.getRepositoryId(), 100, 101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111, 112, 113, 114, 115, 116);
+//            AnalysisDTO analysisDTO = analysisService.updateAnalysisByRepositoryID(repositoryEntity.getRepositoryId(), newAnalysisDTO);
 //            LOGGER.info("handlePushEvent : Analysis has been stored database");
 
-            //I have called Threshold service here because IDK where else to call it
-            ThresholdDTO thresholdDTO = new ThresholdDTO(1, 1, 1, 90, 75, 3, 80, 12, 4, 17, 43, 32, 57, 54, 21, 29, 11);
-            thresholdService.addThreshold(thresholdDTO, repositoryEntity.getRepositoryId());
-            LOGGER.info("handlePushEvent : Threshold has been stored in database");
+            //I have called Threshold service here. We can move these to the required files later.
+//            ThresholdDTO newThresholdDTO = new ThresholdDTO(100, 101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111, 112, 113, 114, 115, 116);
+//            ThresholdDTO thresholdDTO = thresholdService.updateThresholdByID(newThresholdDTO, repositoryEntity.getRepositoryId());
+//            LOGGER.info("handlePushEvent : Threshold has been stored in database");
         }
     }
 
