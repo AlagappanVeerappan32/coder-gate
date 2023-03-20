@@ -1,6 +1,5 @@
 package com.github.codergate.services;
 import com.github.codergate.dto.installation.AccountDTO;
-import com.github.codergate.dto.push.SenderDTO;
 import com.github.codergate.entities.UserEntity;
 import com.github.codergate.repositories.UserRepository;
 import org.slf4j.Logger;
@@ -182,25 +181,6 @@ public class UserService {
      * @param userEntity User Entity
      * @return SenderDTO
      */
-    private SenderDTO convertEntityToSenderDTO(UserEntity userEntity)
-    {
-        SenderDTO senderDTO = null;
-        if(userEntity != null)
-        {
-            senderDTO = new SenderDTO();
-            if(userEntity.getUserId() != 0L)
-            {
-                senderDTO.setId((int) userEntity.getUserId());
-            }
-            if (userEntity.getUserName() != null)
-            {
-                senderDTO.setLogin(userEntity.getUserName());
-            }
-            LOGGER.info("convertEntityToSenderDto : Entity has been converted to SenderDTO {}", senderDTO);
-        } else {
-            LOGGER.warn("convertEntityToSenderDto : User entity value is null");
-        }
-        return senderDTO;
-    }
+
 }
 

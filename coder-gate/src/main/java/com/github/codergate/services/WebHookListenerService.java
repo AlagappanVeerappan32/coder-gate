@@ -100,7 +100,6 @@ public class WebHookListenerService {
             LOGGER.info("installationAddRepositoryWebhookListener : user has installed the application");
 
 
-
         } else if (payload != null && payload.getInstallation() != null && payload.getInstallation().getAccount() != null
                 && payload.getRepositoriesAdded() != null && payload.getAction() != null) {
 
@@ -218,8 +217,6 @@ public class WebHookListenerService {
 
             UserEntity userEntity = userService.addUser(pullRequestPayloadDTO.getPayload().getSender().getId(), pullRequestPayloadDTO.getPayload().getSender().getLogin(), pullRequestPayloadDTO.getPayload().getSender().getUrl());
             RepositoryEntity repositoryEntity = repositoryService.addRepository(pullRequestPayloadDTO.getPayload().getRepository().getId(), pullRequestPayloadDTO.getPayload().getRepository().getName(), pullRequestPayloadDTO.getPayload().getRepository().getFork(), pullRequestPayloadDTO.getPayload().getRepository().getOwner().getId());
-//            repositoryTagService.addTag(pullRequestPayloadDTO.getPayload().getRepository().getId());
-//            repositoryBranchService.addBranch(pullRequestPayloadDTO.getPayload().getRepository());
             List<Integer> repositoryEntitiesIds = new ArrayList<>();
             repositoryEntitiesIds.add(repositoryEntity.getRepositoryId());
             eventService.addEvent(pullRequestPayloadDTO.getEvent(), (int)userEntity.getUserId(), repositoryEntitiesIds);

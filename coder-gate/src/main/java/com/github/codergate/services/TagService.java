@@ -37,22 +37,21 @@ public class TagService {
      * @param repositoryDTO RepositoryDTO object
      * @return Tag Entity
      */
-    public TagEntity convertDTOToEntity(RepositoryDTO repositoryDTO) {
+    private  TagEntity convertDTOToEntity(RepositoryDTO repositoryDTO) {
 
         TagEntity tagEntity = null;
 
         if(repositoryDTO != null)
         {
-            tagEntity = new TagEntity();
             if(repositoryDTO.getTagsUrl() != null && repositoryDTO.getId() != null)
             {
+                tagEntity = new TagEntity();
                 TagId tagId = new TagId(repositoryDTO.getId(), repositoryDTO.getTagsUrl());
                 tagEntity.setTagId(tagId);
+                LOGGER.info("convertDTOToEntity : Repository DTO has been converted to Tag Entity {}", tagEntity);
             }
-        } else {
-            LOGGER.warn("convertDTOToEntity : Repository dto doesn't have tag");
+            LOGGER.warn("convertDTOToEntity : Repository dto doesn't have tag information");
         }
-        LOGGER.info("convertDTOToEntity : Repository DTO has been converted to Tag Entity {}", tagEntity);
         return tagEntity;
     }
 
@@ -63,19 +62,18 @@ public class TagService {
      * @param tag Tag Entity
      * @return RepositoryDTO Object
      */
-    public RepositoryDTO convertEntityToDTO(TagEntity tag) {
+    private RepositoryDTO convertEntityToDTO(TagEntity tag) {
         RepositoryDTO repositoryDTO = null;
         if(tag != null)
         {
-            repositoryDTO = new RepositoryDTO();
             if(tag.getTagId() != null)
             {
+                repositoryDTO = new RepositoryDTO();
                 TagId tagIdObject = tag.getTagId();
                 repositoryDTO.setId(tagIdObject.getRepositoryId());
                 repositoryDTO.setTagsUrl(tagIdObject.getTagUrl());
+                LOGGER.info("ConvertEntityToDto : Tag Entity has been converted to RepositoryDTO {}", repositoryDTO);
             }
-            LOGGER.info("ConvertEntityToDto : Tag Entity has been converted to RepositoryDTO {}", repositoryDTO);
-        } else {
             LOGGER.warn("ConvertEntityToDto : Tag entity value is null");
         }
         return repositoryDTO;

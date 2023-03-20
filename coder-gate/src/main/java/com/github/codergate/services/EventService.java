@@ -84,17 +84,19 @@ public class EventService {
      * @param eventId event id
      * @return entity class
      */
-    public EventEntity updateEntity(Long eventId)
-    {
-        EventEntity eventEntity=eventRepository.findById(eventId.intValue()).orElse(null);
-        if(eventEntity!=null)
-        {
-            // perform further implementation when required
-            EventEntity saveEvent = eventRepository.save(eventEntity);
-            LOGGER.info("updateEntity : Updating the event information");
+    public EventEntity updateEntity(Long eventId) {
+        EventEntity event = null;
+        Optional<EventEntity> optionalEventEntity = eventRepository.findById(eventId.intValue());
+        if (optionalEventEntity.isPresent()) {
+            event = optionalEventEntity.get();
+            LOGGER.info("updateEntity: Updating the event information");
+            eventRepository.save(event);
+        } else {
+            LOGGER.warn("updateEntity: Event with ID {} not found", eventId);
         }
-        return eventEntity;
+        return event;
     }
+
 
     /***
      * Delete the events
@@ -121,7 +123,7 @@ public class EventService {
      * @param repositoryIdList repositoryRepository ids
      * @return entity
      */
-    public List<EventEntity> convertDTOToEntity(String eventTypeName, int userId, List<Integer>repositoryIdList)
+    private List<EventEntity> convertDTOToEntity(String eventTypeName, int userId, List<Integer>repositoryIdList)
     {
         List<EventEntity> eventEntityList = new ArrayList<>();
         EventEntity eventEntity;
@@ -140,8 +142,6 @@ public class EventService {
                 eventEntityList.add(eventEntity);
             }
             LOGGER.info("convertDTOToEntity : DTO has been converted to Entity {}", eventEntityList);
-        }else {
-            LOGGER.warn("convertDTOToEntity : Event Entity value is null");
         }
         return eventEntityList;
     }
@@ -190,7 +190,7 @@ public class EventService {
      * @param eventType event information
      * @return dto class
      */
-    public InstallationPayloadDTO convertEntityToDTO(List<EventEntity> eventType)
+    private InstallationPayloadDTO convertEntityToDTO(List<EventEntity> eventType)
     {
         InstallationPayloadDTO installationPayloadDTO = null;
         if(eventType != null)
@@ -202,8 +202,6 @@ public class EventService {
             }
 
             LOGGER.info("InstallationPayloadDTO : Entity has been converted to DTO {}", installationPayloadDTO);
-        }else {
-            LOGGER.warn("InstallationPayloadDTO : converting entity to installationPayloadDTO is null ");
         }
         return installationPayloadDTO;
     }
@@ -213,7 +211,7 @@ public class EventService {
      * @param eventType Event Entity
      * @return HeadCommitDTO object
      */
-    public HeadCommitDTO entityToHeadCommitDto(EventEntity eventType)
+    private HeadCommitDTO entityToHeadCommitDto(EventEntity eventType)
     {
         HeadCommitDTO headCommitDTO = null;
         if(eventType != null)

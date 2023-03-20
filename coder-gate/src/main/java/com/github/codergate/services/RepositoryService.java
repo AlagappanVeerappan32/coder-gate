@@ -209,25 +209,6 @@ public class RepositoryService {
      * @param repositoryEntity RepositoryEntity class
      * @return dto class
      */
-    private RepositoryDTO convertEntityToDtoForPushEvent(RepositoryEntity repositoryEntity) {
-        RepositoryDTO repositoryDTO = null;
-        if(repositoryEntity != null)
-        {
-            repositoryDTO = new RepositoryDTO();
-            if(repositoryEntity.getRepositoryId() != 0)
-            {
-                repositoryDTO.setId(repositoryEntity.getRepositoryId());
-            }
-            if(repositoryEntity.getRepositoryName() != null)
-            {
-                repositoryDTO.setName(repositoryEntity.getRepositoryName());
-            }
-            repositoryDTO.setFork(repositoryEntity.isFork());
-            LOGGER.info("convertEntityToDtoForPushEvent : Entity has been converted to RepositoryRepository DTO {}", repositoryDTO);
-        } else {
-            LOGGER.warn("convertEntityToDtoForPushEvent : RepositoryEntity list is null");
-        }
-        return repositoryDTO;
-    }
+
 
 }

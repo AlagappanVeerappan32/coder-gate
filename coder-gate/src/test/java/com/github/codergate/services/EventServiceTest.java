@@ -2,6 +2,7 @@ package com.github.codergate.services;
 
 import com.github.codergate.dto.installation.InstallationPayloadDTO;
 
+import com.github.codergate.dto.push.HeadCommitDTO;
 import com.github.codergate.entities.EventEntity;
 import com.github.codergate.repositories.EventRepository;
 import org.junit.jupiter.api.Test;
@@ -11,12 +12,10 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
 
 
 @ExtendWith(MockitoExtension.class)
@@ -26,106 +25,13 @@ class EventServiceTest {
     EventRepository eventRepositoryMock;
     @InjectMocks
     EventService eventServiceMock;
-    EventService eventService=new EventService();
 
 
-    @Test
-    void testConvertEntityToDTOWhenDataIsNull()
-    {
-        List<EventEntity> expected = null;
-        InstallationPayloadDTO actual = eventService.convertEntityToDTO(expected);
-        assertNull(actual);
-    }
-
-    @Test
-    void testConvertEntityToDTOWhenDataIsPresent()
-    {
-        List<EventEntity> expected = new ArrayList<>();
-        EventEntity eventEntityOne = new EventEntity();
-        eventEntityOne.setEventId(1L);
-        eventEntityOne.setEventName("install application");
-        expected.add(eventEntityOne);
-
-        InstallationPayloadDTO actual = eventService.convertEntityToDTO(expected);
-
-        assertNotNull(actual);
-        assertEquals(eventEntityOne.getEventName(), actual.getAction());
-    }
-
-    @Test
-    void testConvertEntityToDTOWhenSomeDataIsNull()
-    {
-        List<EventEntity> expected = new ArrayList<>();
-        EventEntity eventEntityOne = new EventEntity();
-        eventEntityOne.setEventId(1L);
-        eventEntityOne.setEventName(null);
-        expected.add(eventEntityOne);
-
-        InstallationPayloadDTO actual = eventService.convertEntityToDTO(expected);
-
-        assertNotNull(actual);
-        assertNull(actual.getAction());
-    }
-
-    @Test
-    void testConvertDTOToEntityWhenSomeDataIsPresent()
-    {
-        String eventTypeName = "commit";
-        int userId = 32;
-        List<Integer> repositoryIdList = Arrays.asList(1, 2, 3);
-
-        List<EventEntity> actual = eventService.convertDTOToEntity(eventTypeName, userId, repositoryIdList);
-
-        assertEquals(repositoryIdList.size(), actual.size());
-        assertEquals(eventTypeName, actual.get(0).getEventName());
-        assertEquals(userId, actual.get(0).getUserIdInEvent().getUserId());
-        assertTrue(repositoryIdList.contains(actual.get(0).getRepositoryIdInEvent().getRepositoryId()));
-        assertEquals(eventTypeName, actual.get(1).getEventName());
-        assertEquals(userId, actual.get(1).getUserIdInEvent().getUserId());
-        assertTrue(repositoryIdList.contains(actual.get(1).getRepositoryIdInEvent().getRepositoryId()));
-        assertEquals(eventTypeName, actual.get(2).getEventName());
-        assertEquals(userId, actual.get(2).getUserIdInEvent().getUserId());
-        assertTrue(repositoryIdList.contains(actual.get(2).getRepositoryIdInEvent().getRepositoryId()));
-    }
-
-    @Test
-    void testConvertDTOToEntityWhenSomeDataIsNull()
-    {
-        String eventTypeName = null;
-        int userId = 32;
-        List<Integer> repositoryIdList = Arrays.asList(1, 2, 3);
-        List<EventEntity> actual = eventService.convertDTOToEntity(eventTypeName, userId, repositoryIdList);
-        assertTrue(actual.isEmpty());
-    }
-
-    @Test
-    void testConvertDTOToEntityWhenIdIsNull()
-    {
-        String eventTypeName = "commit";
-        int userId = 0;
-        List<Integer> repositoryIdList = Arrays.asList(1, 2, 3);
-        List<EventEntity> actual = eventService.convertDTOToEntity(eventTypeName, userId, repositoryIdList);
-        assertTrue(actual.isEmpty());
-    }
-    @Test
-    void testConvertDTOToEntityWhenRepositoryIdIsOnlyOne()
-    {
-        String eventTypeName = "commit";
-        int userId = 32;
-        List<Integer> repositoryIdList =  Collections.singletonList(1);
-
-        List<EventEntity> actual = eventService.convertDTOToEntity(eventTypeName, userId, repositoryIdList);
-
-        assertEquals(repositoryIdList.size(), actual.size());
-        assertEquals(eventTypeName, actual.get(0).getEventName());
-        assertEquals(userId, actual.get(0).getUserIdInEvent().getUserId());
-        assertEquals(1, actual.get(0).getRepositoryIdInEvent().getRepositoryId());
-    }
 
     @Test
     void testAddEventWhenAllDataIsPresent() {
         String eventType = "create";
-        int userId = 123;
+        int userId = 32;
         List<Integer> repositoryIdList = Arrays.asList(1, 2, 3);
 
         List<EventEntity> eventEntityList = new ArrayList<>();
@@ -134,7 +40,7 @@ class EventServiceTest {
         eventEntityOne.setEventName("add");
         eventEntityList.add(eventEntityOne);
 
-        Mockito.when(eventRepositoryMock.saveAll(Mockito.anyList())).thenReturn(eventEntityList);
+        when(eventRepositoryMock.saveAll(Mockito.anyList())).thenReturn(eventEntityList);
 
         InstallationPayloadDTO actual = eventServiceMock.addEvent(eventType, userId, repositoryIdList);
 
@@ -147,13 +53,158 @@ class EventServiceTest {
     void testAddEventWithNullInputs() {
 
         String eventType = null;
-        Integer userId = null;
+        Integer userId = 0;
         List<Integer> repositoryIdList = null;
 
-        assertThrows(NullPointerException.class, () -> {
+        assertThrows(IllegalArgumentException.class, () -> {
             eventServiceMock.addEvent(eventType, userId, repositoryIdList);
         });
     }
+    @Test
+    void testAddEventWhenEventTypeIsNull() {
+        String eventType = null;
+        int userId = 32;
+        List<Integer> repositoryIdList = new ArrayList<>();
+        repositoryIdList.add(1);
+
+        assertThrows(IllegalArgumentException.class, () -> {
+            eventServiceMock.addEvent(eventType, userId, repositoryIdList);
+        });
+
+    }
+
+    @Test
+    void testAddEventWhenRepositoryIdListIsNull() {
+        String eventType = "create";
+        int userId = 32;
+        List<Integer> repositoryIdList = null;
+
+        assertThrows(IllegalArgumentException.class, () -> {
+            eventServiceMock.addEvent(eventType, userId, repositoryIdList);
+        });
+    }
+
+    @Test
+    void testDeleteEvent()
+    {
+        int eventId = 11;
+        Mockito.doNothing().when(eventRepositoryMock).deleteById(eventId);
+
+        boolean actual = eventServiceMock.deleteEventById(eventId);
+
+        assertTrue(actual);
+        verify(eventRepositoryMock, Mockito.times(1)).deleteById(eventId);
+    }
+
+    @Test
+    void deleteEventByIdShouldNotDeleteEventWhenIdIsZero() {
+        int eventId = 0;
+        boolean actual = eventServiceMock.deleteEventById(eventId);
+        assertFalse(actual);
+        verify(eventRepositoryMock, Mockito.times(0)).deleteById(eventId);
+    }
+
+    @Test
+    void testEventByIdWithValidId() {
+        Long eventId = 111L;
+        EventEntity expected = new EventEntity();
+        when(eventRepositoryMock.findById(eventId.intValue())).thenReturn(Optional.of(expected));
+
+        EventEntity actual = eventServiceMock.getEventById(eventId);
+
+        assertEquals(expected, actual);
+        verify(eventRepositoryMock).findById(eventId.intValue());
+        verifyNoMoreInteractions(eventRepositoryMock);
+
+    }
+
+    @Test
+    void testEventByIdWithInvalidId() {
+        Long eventId = 121L;
+        when(eventRepositoryMock.findById(eventId.intValue())).thenReturn(Optional.empty());
+
+        EventEntity actual = eventServiceMock.getEventById(eventId);
+
+        assertNull(actual);
+        verify(eventRepositoryMock).findById(eventId.intValue());
+        verifyNoMoreInteractions(eventRepositoryMock);
+    }
+
+    @Test
+     void testUpdateEntity() {
+        EventEntity eventEntity = new EventEntity();
+        eventEntity.setEventId(111L);
+        eventEntity.setEventName("Testing");
+
+        Mockito.when(eventRepositoryMock.findById(Mockito.anyInt())).thenReturn(Optional.of(eventEntity));
+        Mockito.when(eventRepositoryMock.save(Mockito.any(EventEntity.class))).thenReturn(eventEntity);
+
+        EventEntity actual = eventServiceMock.updateEntity(1L);
+
+        assertNotNull(actual);
+
+        assertEquals(actual.getEventId(), eventEntity.getEventId());
+        assertEquals(actual.getEventName(), eventEntity.getEventName());
+
+        Mockito.verify(eventRepositoryMock, Mockito.times(1)).save(Mockito.any(EventEntity.class));
+    }
+
+    @Test
+     void testUpdateEntityWhenEventNotFound() {
+        int eventId = 1211;
+        when(eventRepositoryMock.findById(anyInt())).thenReturn(Optional.empty());
+        EventEntity actual = eventServiceMock.updateEntity((long) eventId);
+        assertNull(actual);
+        verify(eventRepositoryMock, times(1)).findById(eventId);
+        verifyNoMoreInteractions(eventRepositoryMock);
+    }
+
+    @Test
+    void testAddEventFromPushEvent()
+    {
+        EventEntity savedEventEntity = new EventEntity();
+        savedEventEntity.setEventId(1L);
+        when(eventRepositoryMock.save(any(EventEntity.class))).thenReturn(savedEventEntity);
+
+        HeadCommitDTO headCommitDTO = new HeadCommitDTO();
+        headCommitDTO.setId("commit_id");
+        headCommitDTO.setMessage("commit_message");
+
+
+        HeadCommitDTO actual = eventServiceMock.addEvent(headCommitDTO, 1, 2);
+
+        assertNotNull(actual);
+        assertEquals(savedEventEntity.getCommitId(), actual.getId());
+        assertEquals(savedEventEntity.getCommitMessage(), actual.getMessage());
+    }
+
+    @Test
+    public void testAddPushEventWithNullCommit(){
+        HeadCommitDTO headCommitDTO = null;
+        int userID = 1;
+        int repositoryID = 23;
+        HeadCommitDTO result = eventServiceMock.addEvent(headCommitDTO, userID, repositoryID);
+        assertNull(result);
+    }
+
+    @Test
+    public void testAddPushEventWithUserRepositoryIdIsNull(){
+        HeadCommitDTO headCommitDTO = new HeadCommitDTO();
+        int userID = 123;
+        int repositoryID = 0;
+        HeadCommitDTO result = eventServiceMock.addEvent(headCommitDTO, userID, repositoryID);
+        assertNull(result);
+    }
+
+    @Test
+    public void testAddPushEventWithUserRepositoryIdIsNull1(){
+        HeadCommitDTO headCommitDTO = null;
+        int userID = 0;
+        int repositoryID = 0;
+        HeadCommitDTO result = eventServiceMock.addEvent(headCommitDTO, userID, repositoryID);
+        assertNull(result);
+    }
+
 
 
 

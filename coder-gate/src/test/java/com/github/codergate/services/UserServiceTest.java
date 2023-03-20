@@ -224,7 +224,7 @@ class UserServiceTest {
 
         Integer userId = 32;
         String login = "TestBot";
-        ;
+
         String email = null;
 
         UserEntity actual = userServiceMock.addUser(userId, login, email);
