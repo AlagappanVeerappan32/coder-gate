@@ -18,7 +18,7 @@ test:
   tags:
     - Group19Runner
   only:
-    - dev
+    - serviceTestCases
 
 build:
   stage: build
@@ -33,4 +33,4 @@ build:
   tags:
     - Group19Runner
   only:
-    - dev
+    - serviceTestCases
