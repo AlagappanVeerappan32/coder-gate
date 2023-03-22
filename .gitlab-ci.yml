@@ -1,10 +1,15 @@
+image: maven:latest
+
 stages:
   - test
+  - Code-Quality
   - build
+
+include:
+  - template: Code-Quality.gitlab-ci.yml
 
 test:
   stage: test
-  image: maven:latest
   artifacts:
     paths:
       - coder-gate/target
@@ -20,9 +25,18 @@ test:
   only:
     - serviceTestCases
 
+code_quality:
+  stage: Code-Quality
+  script:
+    - echo "Running code quality checks"
+  artifacts:
+    expose_as: 'Code Quality Report'
+    paths: [gl-code-quality-report.json]
+
+
+
 build:
   stage: build
-  image: maven:latest
   script:
     - cd coder-gate
     - echo "Building the pipeline"
@@ -34,3 +48,6 @@ build:
     - Group19Runner
   only:
     - serviceTestCases
+
+
+
