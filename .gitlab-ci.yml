@@ -2,7 +2,7 @@ image: maven:latest
 
 stages:
   - test
-  - Code-Quality
+  - code-Quality
   - build
 
 include:
@@ -24,14 +24,10 @@ test:
   tags:
     - Group19Runner
 
-
 code_quality:
-  stage: Code-Quality
+  stage: code-Quality
   artifacts:
-    paths:
-      - builds/courses/2023-winter/csci-5308/group19/gl-code-quality-report.json
-  tags:
-    - Group19Runner
+    paths: [gl-code-quality-report.json]
 
 build:
   stage: build
