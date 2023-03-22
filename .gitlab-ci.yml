@@ -28,8 +28,10 @@ test:
 code_quality:
   stage: Code-Quality
   artifacts:
-    reports:
-      codequality: builds/courses/2023-winter/csci-5308/group19/gl-code-quality-report.json   
+    paths:
+      - builds/courses/2023-winter/csci-5308/group19/gl-code-quality-report.json
+  tags:
+    - Group19Runner
 
 build:
   stage: build
