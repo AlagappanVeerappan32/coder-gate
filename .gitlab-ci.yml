@@ -16,7 +16,7 @@ test:
       - coder-gate/target
     reports:
       junit:
-        - coder-gate/target/ProjectReports/TEST_*.xml
+        - $CI_PROJECT_DIR/coder-gate/target/ProjectReports/TEST_*.xml
   script:
     - cd coder-gate
     - echo "Pipeline test started"
@@ -32,6 +32,8 @@ code_quality:
   artifacts:
     paths: 
       - $CI_PROJECT_DIR/gl-code-quality-report.json
+    reports:
+      codequality: $CI_PROJECT_DIR/gl-code-quality-report.json 
   tags:
     - Group19Runner    
 
