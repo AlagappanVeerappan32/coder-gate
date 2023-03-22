@@ -31,9 +31,9 @@ code_quality:
     - echo "Running code quality checks" 
   artifacts:
     paths:
-      - /home/gitlab-runner/builds/ju9h8FbR/0/courses/2023-winter/csci-5308/group19/coder-gate/target/gl-code-quality-report.json
+      - coder-gate/target/gl-code-quality-report.json
   tags:
-    - Group19Runner  
+    - Group19Runner    
 
 build:
   stage: build
