@@ -30,9 +30,8 @@ code_quality:
   script:
     - echo "Running code quality checks" 
   artifacts:
-    expose_as: 'Code Quality Report'
     paths:
-      - coder-gate/code-quality-report.json
+      - coder-gate/target/code-quality-report.json
   tags:
     - Group19Runner  
   
