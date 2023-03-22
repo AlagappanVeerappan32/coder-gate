@@ -29,6 +29,7 @@ public class UserService {
             UserEntity savedEntity = userRepository.save(userEntity);
             LOGGER.info("addUser : The user information is added {}", savedEntity);
             account = convertEntityToAccountDto(savedEntity);
+            System.out.println(account);
         }
         return account;
     }
