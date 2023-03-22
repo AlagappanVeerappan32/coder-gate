@@ -30,7 +30,7 @@ code_quality:
   script:
     - echo "Running code quality checks" 
   artifacts:
-    paths: $CI_PROJECT_DIR/gl-code-quality-report.json]
+    paths: $CI_PROJECT_DIR/gl-code-quality-report.json
   tags:
     - Group19Runner    
 
