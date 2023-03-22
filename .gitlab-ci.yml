@@ -11,12 +11,12 @@ include:
 
 test:
   stage: test
-  artifacts:
+  artifacts: 
     paths:
       - coder-gate/target
     reports:
       junit:
-        - $CI_PROJECT_DIR/coder-gate/target/ProjectReports/TEST_*.xml
+        - ./coder-gate/target/ProjectReports/TEST_*.xml
   script:
     - cd coder-gate
     - echo "Pipeline test started"
@@ -27,15 +27,10 @@ test:
 
 code_quality:
   stage: Code-Quality
-  script:
-    - echo "Running code quality checks" 
+  image: docker:19.03.11
   artifacts:
-    paths: 
-      - $CI_PROJECT_DIR/gl-code-quality-report.json
     reports:
-      codequality: $CI_PROJECT_DIR/gl-code-quality-report.json 
-  tags:
-    - Group19Runner    
+      codequality: ./gl-code-quality-report.json   
 
 build:
   stage: build
