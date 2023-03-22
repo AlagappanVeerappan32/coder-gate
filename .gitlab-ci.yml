@@ -30,8 +30,7 @@ code_quality:
   script:
     - echo "Running code quality checks" 
   artifacts:
-    paths:
-      - coder-gate/target/gl-code-quality-report.json
+    paths: [gl-code-quality-report.json]
   tags:
     - Group19Runner    
 
