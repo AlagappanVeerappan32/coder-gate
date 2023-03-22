@@ -30,7 +30,7 @@ code_quality:
   image: docker:19.03.11
   artifacts:
     reports:
-      codequality: ./gl-code-quality-report.json   
+      codequality: builds/courses/2023-winter/csci-5308/group19/gl-code-quality-report.json   
 
 build:
   stage: build
