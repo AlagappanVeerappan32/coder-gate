@@ -1,0 +1,51 @@
+image: maven:latest
+
+stages:
+  - test
+  - Code-Quality
+  - build
+
+include:
+  - template: Code-Quality.gitlab-ci.yml
+
+
+test:
+  stage: test
+  artifacts:
+    paths:
+      - coder-gate/target
+    reports:
+      junit:
+        - coder-gate/target/ProjectReports/TEST_*.xml
+  script:
+    - cd coder-gate
+    - echo "Pipeline test started"
+    - mvn verify
+  tags:
+    - Group19Runner
+
+
+code_quality:
+  stage: Code-Quality
+  script:
+    - echo "Running code quality checks" 
+  artifacts:
+    paths: [gl-code-quality-report.json]
+  tags:
+    - Group19Runner    
+
+build:
+  stage: build
+  script:
+    - cd coder-gate
+    - echo "Building the pipeline"
+    - mvn clean package
+  artifacts:
+    paths:
+      - coder-gate/target
+  tags:
+    - Group19Runner
+
+
+
+
