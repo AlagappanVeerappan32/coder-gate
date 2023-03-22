@@ -8,6 +8,7 @@ stages:
 include:
   - template: Code-Quality.gitlab-ci.yml
 
+
 test:
   stage: test
   artifacts:
@@ -22,16 +23,20 @@ test:
     - mvn verify
   tags:
     - Group19Runner
-  only:
-    - serviceTestCases
+
 
 code_quality:
   stage: Code-Quality
   script:
-    - echo "Running code quality checks"
+    - echo "Running code quality checks" 
   artifacts:
     expose_as: 'Code Quality Report'
-    paths: [coder-gate/gl-code-quality-report.json]
+    paths:
+      - coder-gate/code-quality-report.json
+  tags:
+    - Group19Runner  
+  
+
 
 
 
@@ -46,8 +51,7 @@ build:
       - coder-gate/target
   tags:
     - Group19Runner
-  only:
-    - serviceTestCases
+
 
 
 
