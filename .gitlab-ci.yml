@@ -31,13 +31,9 @@ code_quality:
     - echo "Running code quality checks" 
   artifacts:
     paths:
-      - coder-gate/target/code-quality-report.json
+      - coder-gate/target/gl-code-quality-report.json
   tags:
     - Group19Runner  
-  
-
-
-
 
 build:
   stage: build
