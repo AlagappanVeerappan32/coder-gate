@@ -1,4 +1,4 @@
-image: maven:latest
+
 
 stages:
   - test
@@ -11,6 +11,7 @@ include:
 
 test:
   stage: test
+  image: maven:latest
   artifacts: 
     paths:
       - coder-gate/target
@@ -34,6 +35,7 @@ code_quality:
 
 build:
   stage: build
+  image: maven:latest
   script:
     - cd coder-gate
     - echo "Building the pipeline"
