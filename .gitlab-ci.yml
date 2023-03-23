@@ -1,6 +1,7 @@
 stages:
   - test
   - code-Quality
+  - codeQualityOnMerge
   - build
 
 include:
@@ -11,7 +12,7 @@ test:
   image: maven:latest
   artifacts: 
     paths:
-      - ./coder-gate/target
+      - coder-gate/target
     reports:
       junit:
         - ./coder-gate/target/ProjectReports/TEST_*.xml
@@ -31,10 +32,24 @@ code_quality:
   tags:
     - Group19Runner
   rules:
-  - if: $CODE_QUALITY_DISABLED
-    when: never
-  - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+    - if: '$CI_MERGE_REQUEST_IID'
+      when: always
+    - when: always
 
+code_quality_report:
+  stage: codeQualityOnMerge
+  image: registry.gitlab.com/gitlab-org/security-products/codequality:latest
+  allow_failure: true
+  dependencies:
+    - code_quality
+  rules:
+    - if: '$CI_MERGE_REQUEST_IID'
+      when: always
+  script:
+    - codeclimate analyze -f json > gl-code-quality-report.json
+  artifacts:
+    paths:
+      - gl-code-quality-report.json
 
 build:
   stage: build
