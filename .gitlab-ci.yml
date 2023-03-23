@@ -34,6 +34,8 @@ code_quality:
       - gl-code-quality-report.json
     reports:
       codequality: gl-code-quality-report.json
+  tags:
+    - Group19Runner  
 
 
 
