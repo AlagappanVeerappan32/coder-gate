@@ -25,10 +25,11 @@ test:
 
 code_quality:
   stage: code-Quality
+  before_script:
+    - apt-get update && apt-get install -y unzip
   script: 
     - cd $CI_PROJECT_DIR
     - curl -L "https://github.com/pmd/pmd/releases/download/pmd_releases%2F6.44.0/pmd-bin-6.44.0.zip" -o pmd.zip
-    - apt-get update && apt-get install -y unzip
     - unzip pmd.zip
     - ./pmd-bin-6.44.0/bin/run.sh pmd -d . -R java-basic,java-design -f json -r gl-code-quality-report.json # command to generate report
   artifacts:
