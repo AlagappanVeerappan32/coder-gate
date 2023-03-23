@@ -11,7 +11,7 @@ test:
   image: maven:latest
   artifacts: 
     paths:
-      - coder-gate/target
+      - ./coder-gate/target
     reports:
       junit:
         - ./coder-gate/target/ProjectReports/TEST_*.xml
@@ -30,6 +30,11 @@ code_quality:
     paths: [gl-code-quality-report.json] 
   tags:
     - Group19Runner
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event" # Run code quality job in merge request pipelines
+      when: always
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+      when: always
 
 
 
