@@ -25,7 +25,7 @@ test:
 code_quality:
   stage: code-Quality
   artifacts:
-    - paths: [gl-code-quality-report.json] 
+    paths: [gl-code-quality-report.json] 
   tags:
     - Group19Runner
 
