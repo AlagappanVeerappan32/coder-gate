@@ -3,9 +3,6 @@ stages:
   - code-Quality
   - build
 
-include:
-  - template: Code-Quality.gitlab-ci.yml
-
 test:
   stage: test
   image: maven:latest
