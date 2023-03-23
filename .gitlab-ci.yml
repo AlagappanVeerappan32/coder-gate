@@ -22,12 +22,20 @@ test:
   tags:
     - Group19Runner
 
+
 code_quality:
   stage: code-Quality
+  image: alpine:latest
+  script:
+    - apk add curl
+    - curl -L https://gitlab.com/gitlab-org/security-products/codequality/-/raw/master/scripts/codeclimate.sh | bash -s -- -t gitlab -o gl-code-quality-report.json .
   artifacts:
-    paths: [gl-code-quality-report.json] 
-  tags:
-    - Group19Runner
+    paths:
+      - gl-code-quality-report.json
+    reports:
+      codequality: gl-code-quality-report.json
+
+
 
 
 build:
