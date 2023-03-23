@@ -6,6 +6,8 @@ stages:
 include:
   - template: Code-Quality.gitlab-ci.yml
 
+before_script:
+   - apt-get update && apt-get install -y unzip
 
 test:
   stage: test
@@ -25,8 +27,7 @@ test:
 
 code_quality:
   stage: code-Quality
-  before_script:
-    - apt-get update && apt-get install -y unzip
+
   script: 
     - cd $CI_PROJECT_DIR
     - curl -L "https://github.com/pmd/pmd/releases/download/pmd_releases%2F6.44.0/pmd-bin-6.44.0.zip" -o pmd.zip
