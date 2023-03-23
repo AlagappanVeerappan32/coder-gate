@@ -21,6 +21,8 @@ test:
     - mvn verify
   tags:
     - Group19Runner
+  only:
+    - testCICodeQuality  
 
 code_quality:
   stage: code-Quality
@@ -28,6 +30,7 @@ code_quality:
     paths: [gl-code-quality-report.json] 
   tags:
     - Group19Runner
+
 
 
 build:
@@ -42,3 +45,5 @@ build:
       - coder-gate/target
   tags:
     - Group19Runner
+  only:
+    - testCICodeQuality
