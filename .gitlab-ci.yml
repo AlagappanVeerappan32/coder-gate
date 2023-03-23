@@ -34,7 +34,7 @@ code_quality:
     reports:
       codequality: gl-code-quality-report.json
     paths:
-      - $CI_PROJECT_DIR/gl-code-quality-report.json # path to the report file
+      - gl-code-quality-report.json # path to the report file
   tags:
     - Group19Runner
 
