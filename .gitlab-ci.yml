@@ -21,8 +21,6 @@ test:
     - mvn verify
   tags:
     - Group19Runner
-  only:
-    - testCICodeQuality  
 
 code_quality:
   stage: code-Quality
@@ -43,5 +41,4 @@ build:
       - coder-gate/target
   tags:
     - Group19Runner
-  only:
-    - testCICodeQuality
+
