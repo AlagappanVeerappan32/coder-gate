@@ -1,5 +1,9 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Repository } from '../repository';
+import { RepositoryService } from '../repository.service';
+import {HttpEvent, HttpHandler, HttpInterceptor,HttpRequest,HttpResponse,HttpErrorResponse} from '@angular/common/http';
+
 
 @Component({
   selector: 'app-dashboard',
@@ -7,6 +11,20 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
   styleUrls: ['./dashboard.component.css']
 })
 export class DashboardComponent {
+
+  public repositories: Repository[];
+  constructor(private repositoryService : RepositoryService ) { }
+
+  public getRepositories(): void{
+    this.repositoryService.getRepositories().subscribe(
+    (response: Repository[]) => {
+    this.repositories = response;
+    },
+    (error: HttpErrorResponse) => {
+    alert(error.message);
+    }
+    );
+  }
 
   public selectedRepo?: string;
   public showThresholdView = false;
@@ -18,6 +36,7 @@ export class DashboardComponent {
   }
 
   ngOnInit() {
+  this.getRepositories();
     this.myForm = this.fb.group({
       repository: ['', Validators.required],
       smellDensity: ['', [Validators.required]],
