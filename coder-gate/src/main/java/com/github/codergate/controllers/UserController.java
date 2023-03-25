@@ -6,10 +6,9 @@ import com.github.codergate.services.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.*;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.RestTemplate;
 
 @RestController
 public class UserController {
@@ -17,11 +16,28 @@ public class UserController {
     UserService userService;
     private static final Logger LOGGER = LoggerFactory.getLogger(UserController.class);
 
+    @Autowired
+    private RestTemplate restTemplate;
+
+
     @GetMapping("/getUserDetails")
-    public ResponseEntity<UserResponse> getUser(@RequestBody UserRequest userRequest) {
-        LOGGER.debug("getUserImage : Entering the method");
-        UserResponse userResponse = userService.getUserResponse(userRequest.getUserName());
-        LOGGER.debug("getUserImage : Exiting the method");
-        return ResponseEntity.ok(userResponse);
+    @ResponseBody
+    @CrossOrigin
+    public String getUser(@RequestParam(name = "githubAccessToken") String githubAccessToken) {
+        HttpHeaders headers = new HttpHeaders();
+        headers.set(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON_VALUE);
+        headers.set(HttpHeaders.AUTHORIZATION, "Bearer "+githubAccessToken);
+        headers.set("X-GitHub-Api-Version", "2022-11-28");
+
+        HttpEntity<String> entity = new HttpEntity<>(headers);
+
+        ResponseEntity<String> response = restTemplate.exchange(
+                "https://api.github.com/user",
+                HttpMethod.GET,
+                entity,
+                String.class
+        );
+
+        return response.getBody();
     }
 }
