@@ -21,7 +21,6 @@ public class UserController {
 
 
     @GetMapping("/getUserDetails")
-    @ResponseBody
     @CrossOrigin
     public String getUser(@RequestParam(name = "githubAccessToken") String githubAccessToken) {
         HttpHeaders headers = new HttpHeaders();
