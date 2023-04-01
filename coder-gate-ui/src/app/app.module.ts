@@ -10,6 +10,7 @@ import { HomeComponent } from './home/home.component';
 import { MainModule } from './main/main.module';
 import { AuthGuard } from './shared/auth.guard';
 import { OAuthModule } from 'angular-oauth2-oidc';
+import { AppRoutingModule } from './app-routing.module';
 
 const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -24,13 +25,14 @@ const routes: Routes = [
     AppComponent,
     GithubLoginComponent,
     HomeComponent,
-    FeaturesComponent
+    FeaturesComponent,
   ],
   imports: [
     BrowserModule,
     HttpClientModule,
     RouterModule.forRoot(routes),
     MainModule,
+    AppRoutingModule,
     BrowserAnimationsModule,
     OAuthModule.forRoot({
       resourceServer: {

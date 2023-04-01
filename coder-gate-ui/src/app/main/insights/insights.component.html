@@ -1,0 +1,13 @@
+<br><br>
+<h1 style="text-align: center">{{selectedRepo}}</h1>
+<div class="col-3 d-flex align-self-center">
+<div class="dropdown" role="button" (click)="showDropdown = !showDropdown">  
+<br>
+<button type="button" class="btn btn-primary">main</button>
+<div class="dropdown-menu" aria-labelledby="insightsDropdown" [ngClass]="{'show': showDropdown}">
+<a class="dropdown-item" href="#">Branch1</a>
+<a class="dropdown-item" href="#">Branch2</a>
+<a class="dropdown-item" href="#">Branch3</a>
+</div>
+</div>
+</div>

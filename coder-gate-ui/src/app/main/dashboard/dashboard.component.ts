@@ -7,9 +7,10 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
   styleUrls: ['./dashboard.component.css']
 })
 export class DashboardComponent {
-
+ 
   public selectedRepo?: string;
   public showThresholdView = false;
+  public showDropdown = false;
 
   myForm?: FormGroup;
 
@@ -32,7 +33,7 @@ export class DashboardComponent {
     }
   }
 
-
+ 
   public ELEMENT_DATA = [
     {
       title: "Java language server",
