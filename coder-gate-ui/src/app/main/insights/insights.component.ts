@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import * as Highcharts from 'highcharts';
 import { HttpClient } from '@angular/common/http';
-import { map } from 'rxjs/operators';
+import { RepositoriesComponent } from 'src/app/repositories/repositories.component';
 
 @Component({
   selector: 'app-insights',
@@ -87,7 +87,7 @@ export class InsightsComponent implements OnInit {
       this.selectedRepo = params['selectedRepo'];
     });
     
-    this.http.get<any>('/data/api').subscribe(data => {
+    this.http.get<any>('//getTimeStampInsight//{branchId}').subscribe(data => {
         this.time_bugs_vuln_code_chartOptions.series[0].name = data.seriesList[0].get("name");
         this.time_bugs_vuln_code_chartOptions.series[0].data[0][0] = data.seriesList[0].get("data").get("dataValuesMap");
         Highcharts.chart('type_number_chart', this.time_bugs_vuln_code_chartOptions);
