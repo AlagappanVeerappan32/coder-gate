@@ -319,7 +319,7 @@ public class WebHookListenerService {
                 try {
                     Path workflowFilePath = Path.of(
                             System.getProperty(Constants.USER_DIR)
-                                    + "/src/main/resources/application-designite.yml");
+                                    + "/coder-gate/src/main/resources/application-designite.yml");
                     bodyParamForPost.put("message", "Code scanning configured");
                     bodyParamForPost.put("content", Files.readAllBytes(workflowFilePath));
                     comitter.put("name", payload.getInstallation().getAppSlug() + "[bot]");
